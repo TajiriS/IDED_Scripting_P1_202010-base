@@ -2,11 +2,11 @@
 {
     public class Unit
     {
-        public int BaseAtk { get; protected set; }
-        public int BaseDef { get; protected set; }
-        public int BaseSpd { get; protected set; }
+        public int BaseAtk { get; protected set; } = Mathf.Clamp(0,255);
+        public int BaseDef { get; protected set; } = Mathf.Clamp(0, 255);
+        public int BaseSpd { get; protected set; } = Mathf.Clamp(0, 255);
 
-        public int MoveRange { get; protected set; }
+        public int MoveRange { get; protected set; } = Mathf.Clamp(1, 10);
         public int AtkRange { get; protected set; }
 
         public float BaseAtkAdd { get; protected set; }
@@ -18,6 +18,7 @@
         public float Speed { get; }
 
         protected Position CurrentPosition;
+        //public Position targetPosition;
 
         public EUnitClass UnitClass { get; protected set; }
 
@@ -33,6 +34,16 @@
         public virtual bool Interact(Unit otherUnit)
         {
             return false;
+        }
+
+        public virtual bool Move(Position targetPosition)
+        {
+            if(targetPosition.x <= MoveRange && targetPosition.y <= MoveRange)
+            {
+                CurrentPosition = targetPosition;
+                return true;
+            }
+            else return false;
         }
 
         public virtual bool Interact(Prop prop) => false;
